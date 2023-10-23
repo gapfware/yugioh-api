@@ -26,3 +26,39 @@ class Card(Base):
         CheckConstraint(
             type.in_(['monster', 'spell', 'trap']), name='type_check'),
     )
+
+    @classmethod
+    def create_card(cls, db, card_data):
+        card = cls(**card_data)
+        db.add(card)
+        db.commit()
+        db.refresh(card)
+        return card
+
+    @classmethod
+    def get_cards(cls, db):
+        return db.query(cls).all()
+
+    @classmethod
+    def get_card_by_id(cls, db, card_id):
+        return db.query(cls).filter(cls.id == card_id).first()
+
+    @classmethod
+    def get_card_by_name(cls, db, card_name):
+        return db.query(cls).filter(cls.name == card_name).first()
+
+    @classmethod
+    def update_card(cls, db, card_id, card_data):
+        card = cls.get_card_by_id(db, card_id)
+        for key, value in card_data.items():
+            setattr(card, key, value)
+        db.commit()
+        db.refresh(card)
+        return card
+
+    @classmethod
+    def delete_card(cls, db, card_id):
+        card = cls.get_card_by_id(db, card_id)
+        db.delete(card)
+        db.commit()
+        return card

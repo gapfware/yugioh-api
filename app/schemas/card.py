@@ -25,3 +25,10 @@ class CardCreate(CardBase):
     defense: Optional[int] = None
     description: str
     image_url: Optional[str] = None
+    
+class CardUpdate(CardBase):
+    name: str
+    attack: Optional[int] = None
+    defense: Optional[int] = None
+    description: str
+    image_url: Optional[str] = None
