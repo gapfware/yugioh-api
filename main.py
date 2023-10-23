@@ -1,5 +1,9 @@
 from fastapi import FastAPI
-from app.models.base import Base
-from app.config.db import engine
+from app.routers.card import cards
+from app.routers.deck import decks
+
+
 
 app = FastAPI()
+app.include_router(cards, prefix='/cards', tags=['cards'])
+app.include_router(decks, prefix='/decks', tags=['decks'])
