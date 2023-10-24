@@ -1,8 +1,9 @@
 from sqlalchemy import func
 from sqlalchemy import TIMESTAMP
-from sqlalchemy.orm import relationship,backref
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String, ForeignKey
-
+from app.models.user import User
+from sqlalchemy.orm import joinedload
 from app.config.db import Base
 
 
@@ -23,7 +24,7 @@ class Deck(Base):
         'DeckCard', back_populates='deck', overlaps='card_deck')
     decks = relationship('DeckCard', back_populates='deck',
                          overlaps='card_deck')
-    
+
     @classmethod
     def create_deck(cls, db, deck_data):
         deck = cls(**deck_data)
@@ -31,34 +32,35 @@ class Deck(Base):
         db.commit()
         db.refresh(deck)
         return deck
-    
+
     @classmethod
     def get_decks(cls, db):
-        return db.query(cls).all()
-    
+        return db.query(cls).options(joinedload(cls.cards)).all()
+
     @classmethod
     def get_deck_by_id(cls, db, deck_id):
         return db.query(cls).filter(cls.id == deck_id).first()
-    
+
     @classmethod
     def get_deck_by_name(cls, db, deck_name):
         return db.query(cls).filter(cls.name == deck_name).first()
-    
+
     @classmethod
     def update_deck(cls, db, deck_id, deck_data):
         deck = cls.get_deck_by_id(db, deck_id)
-        for key, value in deck_data.items():
-            setattr(deck, key, value)
+        deck.name = deck_data['name']
+        deck.owner_id = deck_data['owner_id']
         db.commit()
         db.refresh(deck)
         return deck
-    
+
     @classmethod
     def delete_deck(cls, db, deck_id):
         deck = cls.get_deck_by_id(db, deck_id)
         db.delete(deck)
         db.commit()
         return deck
+
 
 Deck.card_deck = relationship(
     'DeckCard', back_populates='deck', overlaps='deck_cards')
