@@ -8,12 +8,12 @@ decks = APIRouter()
 controller = DeckController
 
 
-@decks.get('/', response_model=list[DeckBase], status_code=200)
+@decks.get('/', status_code=200)
 def get_decks(db: Session = Depends(get_db)):
     return controller(db).get_decks()
 
 
-@decks.get('/{deck_id}', response_model=DeckBase, status_code=200)
+@decks.get('/{deck_id}', status_code=200)
 def get_deck(deck_id: int, db: Session = Depends(get_db)):
     return controller(db).get_deck(deck_id)
 
@@ -31,3 +31,9 @@ def update_deck(deck_id: int, deck: DeckBase, db: Session = Depends(get_db)):
 @decks.delete('/{deck_id}', status_code=200)
 def delete_deck(deck_id: int, db: Session = Depends(get_db)):
     return controller(db).delete_deck(deck_id)
+
+
+@decks.post('/{deck_id}/cards/{card_id}', status_code=201)
+def add_card_to_deck(deck_id: int, card_id: int, db: Session = Depends(get_db)):
+    print(deck_id, card_id)
+    return controller(db).add_card_to_deck(deck_id, card_id)

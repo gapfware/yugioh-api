@@ -2,7 +2,9 @@ from sqlalchemy import func
 from sqlalchemy import TIMESTAMP
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String, ForeignKey
-from app.models.user import User
+from app.models.card import Card
+from app.schemas.card import CardBase
+from app.models.deck_card import DeckCard
 from sqlalchemy.orm import joinedload
 from app.config.db import Base
 
@@ -39,7 +41,7 @@ class Deck(Base):
 
     @classmethod
     def get_deck_by_id(cls, db, deck_id):
-        return db.query(cls).filter(cls.id == deck_id).first()
+        return db.query(cls).options(joinedload(cls.cards)).filter(cls.id == deck_id).first()
 
     @classmethod
     def get_deck_by_name(cls, db, deck_name):
@@ -60,6 +62,13 @@ class Deck(Base):
         db.delete(deck)
         db.commit()
         return deck
+
+    @classmethod
+    def add_card_to_deck(cls, db, deck_id, card_id):
+        deck_card = DeckCard(deck_id=deck_id, card_id=card_id)
+        db.add(deck_card)
+        db.commit()
+        return {'message': 'Card added to deck'}
 
 
 Deck.card_deck = relationship(

@@ -12,6 +12,6 @@ class DeckBase(BaseModel):
     created_at: Optional[datetime] = None
 
 
-class DeckCreate(DeckBase):
+class DeckCreate(BaseModel):
     name: str
     owner_id: int

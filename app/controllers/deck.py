@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.deck import Deck
 from app.models.user import User
+from app.models.card import Card
 from app.schemas.deck import DeckBase, DeckCreate
 from fastapi import HTTPException
 
@@ -45,3 +46,12 @@ class DeckController:
             raise HTTPException(status_code=404, detail='Deck not found')
         Deck.delete_deck(self.db, deck_id)
         return {'message': 'Deck deleted'}
+
+    def add_card_to_deck(self, deck_id: int, card_id: int):
+        deck = Deck.get_deck_by_id(self.db, deck_id)
+        card = Card.get_card_by_id(self.db, card_id)
+        if not deck:
+            raise HTTPException(status_code=404, detail='Deck not found')
+        if not card:
+            raise HTTPException(status_code=404, detail='Card not found')
+        return Deck.add_card_to_deck(self.db, deck_id, card_id)

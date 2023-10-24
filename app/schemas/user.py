@@ -10,6 +10,6 @@ class UserBase(BaseModel):
     created_at: Optional[datetime] = None
 
 
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
     username: str
     password: str

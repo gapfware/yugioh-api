@@ -18,7 +18,7 @@ class CardBase(BaseModel):
         return self.model_dump(exclude={'id', 'updated_at', 'created_at'})
 
 
-class CardCreate(CardBase):
+class CardCreate(BaseModel):
     name: str
     type: str | None = None
     attack: Optional[int] = None
@@ -26,7 +26,7 @@ class CardCreate(CardBase):
     description: str
     image_url: Optional[str] = None
     
-class CardUpdate(CardBase):
+class CardUpdate(BaseModel):
     name: str
     attack: Optional[int] = None
     defense: Optional[int] = None

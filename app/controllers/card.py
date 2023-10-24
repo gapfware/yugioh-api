@@ -11,7 +11,7 @@ class CardController:
     def get_cards(self):
         return Card.get_cards(self.db)
 
-    def get_card(self, card_id: int) -> CardBase:
+    def get_card(self, card_id: int):
         card = Card.get_card_by_id(self.db, card_id)
         if not card:
             raise HTTPException(status_code=404, detail='Card not found')
