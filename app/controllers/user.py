@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from app.models.user import User
+from app.models.deck import Deck
 from app.schemas.user import UserBase, UserCreate
+from app.controllers.deck import DeckController
 from fastapi import HTTPException
 
 
@@ -35,6 +37,10 @@ class UserController:
 
     def delete_user(self, user_id: int):
         existing_user = User.get_user_by_id(self.db, user_id)
+        user_decks = Deck.get_decks_by_owner_id(self.db, user_id)
+        if user_decks:
+            for deck in user_decks:
+                DeckController(self.db).delete_deck(deck.id)
         if not existing_user:
             raise HTTPException(status_code=404, detail='User not found')
         User.delete_user(self.db, user_id)
