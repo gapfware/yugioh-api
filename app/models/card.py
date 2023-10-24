@@ -2,6 +2,7 @@ from sqlalchemy import func
 from sqlalchemy import TIMESTAMP
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Text, CheckConstraint
+from app.schemas.card import CardBase
 from app.config.db import Base
 
 
@@ -36,7 +37,7 @@ class Card(Base):
         return card
 
     @classmethod
-    def get_cards(cls, db):
+    def get_cards(cls, db)-> CardBase: 
         return db.query(cls).all()
 
     @classmethod
