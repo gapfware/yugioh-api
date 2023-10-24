@@ -3,6 +3,7 @@ from app.models.user import User
 from app.models.deck import Deck
 from app.schemas.user import UserBase, UserCreate
 from app.controllers.deck import DeckController
+from app.utils.hashing import Hasher
 from fastapi import HTTPException
 
 
@@ -24,6 +25,7 @@ class UserController:
         if existing_user:
             raise HTTPException(
                 status_code=400, detail=f'A user with the username "{user.username}" already exists.')
+        user.password = Hasher.get_password_hash(user.password)
         return User.create_user(self.db, user.model_dump())
 
     def update_user(self, user_id: int, user: UserBase):
