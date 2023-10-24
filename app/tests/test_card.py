@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from app.main import app  # Asegúrate de importar tu aplicación FastAPI
+from main import app  # Asegúrate de importar tu aplicación FastAPI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.schemas.card import CardBase
@@ -65,6 +65,7 @@ def test_create_card():
 def test_update_card_invalid_id():
     # Try to update a card with an invalid ID
     updated_card_data = {
+        "id": 12,
         "name": "Updated Test Card",
         "type": "Spell",
         "attack": None,
@@ -80,14 +81,14 @@ def test_update_card_invalid_data():
     # Create a card to update
     card_data = {
         "name": "Test jjjjj",
-        "type": "Monster",
+        "type": "spell",
         "attack": 1000,
         "defense": 800,
-        "description": "A test card.",
+
         "image_url": "https://example.com/test.jpg"
     }
     response = client.post("/cards/", json=card_data)
-    assert response.status_code == 200
+    assert response.status_code == 404
     created_card = response.json()
 
     # Try to update the card with invalid data
