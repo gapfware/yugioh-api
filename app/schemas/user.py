@@ -13,3 +13,7 @@ class UserBase(BaseModel):
 class UserCreate(BaseModel):
     username: str
     password: str
+
+
+class UserInDB(UserBase):
+    password: str

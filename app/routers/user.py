@@ -1,8 +1,12 @@
-from fastapi import APIRouter, HTTPException, Depends
+
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.schemas.user import UserBase, UserCreate
 from app.config.dependencies import get_db
 from app.controllers.user import UserController
+from app.schemas.user import UserBase
+
+
 
 users = APIRouter()
 controller = UserController
@@ -13,7 +17,7 @@ def get_users(db: Session = Depends(get_db)):
     return controller(db).get_users()
 
 
-@users.get('/{user_id}', response_model=UserBase, status_code=200)
+@users.get('/{user_id}', response_model=UserBase, status_code=200, )
 def get_user(user_id: int, db: Session = Depends(get_db)):
     return controller(db).get_user(user_id)
 
