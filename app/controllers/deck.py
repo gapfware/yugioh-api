@@ -54,9 +54,18 @@ class DeckController:
         Deck.delete_deck(self.db, deck_id)
         return {'message': 'Deck deleted'}
 
+    def get_card_quantity(self, deck_id: int):
+        deck = Deck.get_deck_by_id(self.db, deck_id)
+        if not deck:
+            raise HTTPException(status_code=404, detail='Deck not found')
+        return len(deck.cards)
+
     def add_card_to_deck(self, deck_id: int, card_id: int):
         deck = Deck.get_deck_by_id(self.db, deck_id)
         card = Card.get_card_by_id(self.db, card_id)
+        card_quantity = self.get_card_quantity(deck_id)
+        if card_quantity >= 60:
+            raise HTTPException(status_code=400, detail='Deck is full')
         if not deck:
             raise HTTPException(status_code=404, detail='Deck not found')
         if not card:

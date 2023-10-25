@@ -42,3 +42,8 @@ def add_card_to_deck(deck_id: int, card_id: int, db: Session = Depends(get_db)):
 @decks.delete('/{deck_id}/cards/{card_id}', status_code=200)
 def remove_card_from_deck(deck_id: int, card_id: int, db: Session = Depends(get_db)):
     return controller(db).remove_card_from_deck(deck_id, card_id)
+
+
+@decks.get('/quantity/{deck_id}')
+def get_card_quantity(deck_id: int, db: Session = Depends(get_db)):
+    return controller(db).get_card_quantity(deck_id)
