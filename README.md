@@ -3,7 +3,6 @@
 Desarrollo de una plataforma de juegos de cartas en línea que se centra en Yu-Gi-
 Oh!. Se utilizó para el desarrollo FastAPI como framework y SQLAlchemy como ORM, así como también el patrón MVC para la construcción de las APIs REST
 
-
 ## Índice
 
 - [Instalacion](#instalacion)
@@ -66,6 +65,8 @@ Nota: Si en un principio no funciona, interrumpir la ejecucion y ejecutarlo nuev
 - API RESTful que permite a los usuarios crear, ver y actualizar mazos de cartas de Yu-Gi-Oh!. Para crear un mazo es necesario previamente crear un usuario, ya que estos estan relacionados directamente
 
 - Se podran asociar directamente cartas a los mazos, asi como eliminar cartas de los mazos.
+
+- La API REST se encuentra documentada con Swagger para acceder a ella lo podemos hacer mediante http://0.0.0.0:8000/docs o http://127.0.0.1:8000
 
 ## Reglas
 
