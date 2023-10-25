@@ -16,7 +16,8 @@ class CardBase(BaseModel):
 
     def dict_exclude_protected(self):
         return self.model_dump(exclude={'id', 'updated_at', 'created_at'})
-    
+
+
 class CardInDeck(CardBase):
     quantity: int = 0
 
@@ -28,7 +29,8 @@ class CardCreate(BaseModel):
     defense: Optional[int] = None
     description: str
     image_url: Optional[str] = None
-    
+
+
 class CardUpdate(BaseModel):
     name: str
     attack: Optional[int] = None

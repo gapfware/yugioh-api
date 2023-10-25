@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.card import Card
 from app.schemas.card import CardBase, CardCreate
 from fastapi import HTTPException
+from app.utils.validators import Validators
 
 
 class CardController:
@@ -32,6 +33,9 @@ class CardController:
         if card.type.lower() != 'monster':
             card.attack = None
             card.defense = None
+        if card.image_url and not Validators.url_regex(card.image_url):
+            raise HTTPException(
+                status_code=400, detail='Image URL is not valid')
         card.type = card.type.lower()
         return Card.create_card(self.db, card.dict_exclude_protected())
 
@@ -50,6 +54,9 @@ class CardController:
         if card.type == 'monster' and (card.attack is None or card.defense is None):
             raise HTTPException(
                 status_code=400, detail='Attack and defense are required for monster cards')
+        if card.image_url and not Validators.url_regex(card.image_url):
+            raise HTTPException(
+                status_code=400, detail='Image URL is not valid')
         return Card.update_card(self.db, card_id, card.dict_exclude_protected())
 
     def delete_card(self, card_id: int):
