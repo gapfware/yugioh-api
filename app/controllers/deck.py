@@ -33,15 +33,17 @@ class DeckController:
         return Deck.create_deck(self.db, deck.model_dump())
 
     def update_deck(self, deck_id: int, deck: DeckCreate) -> DeckBase:
+        print(deck_id, deck)
         existing_deck = Deck.get_deck_by_id(self.db, deck_id)
         if existing_deck.owner_id != deck.owner_id:
             raise HTTPException(
-                status_code=400, detail='You are not the owner of this deck, you cannot update it.')
+                status_code=400, detail='You cannot update the owner of the deck.')
         if not existing_deck:
             raise HTTPException(status_code=404, detail='Deck not found')
         if Deck.get_deck_by_name(self.db, deck.name) and deck.name != existing_deck.name:
             raise HTTPException(
                 status_code=400, detail=f'A deck with the name "{deck.name}" already exists.')
+
         return Deck.update_deck(self.db, deck_id, deck.model_dump())
 
     def delete_deck(self, deck_id: int) -> dict:
@@ -60,8 +62,7 @@ class DeckController:
         if not card:
             raise HTTPException(status_code=404, detail='Card not found')
         return Deck.add_card_to_deck(self.db, deck_id, card_id)
-    
-    
+
     def remove_card_from_deck(self, deck_id: int, card_id: int):
         deck = Deck.get_deck_by_id(self.db, deck_id)
         card = Card.get_card_by_id(self.db, card_id)

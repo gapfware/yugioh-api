@@ -32,6 +32,7 @@ class CardController:
         if card.type.lower() != 'monster':
             card.attack = None
             card.defense = None
+        card.type = card.type.lower()
         return Card.create_card(self.db, card.dict_exclude_protected())
 
     def update_card(self, card_id: int, card: CardCreate):

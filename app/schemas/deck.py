@@ -16,3 +16,6 @@ class DeckBase(BaseModel):
 class DeckCreate(BaseModel):
     name: str
     owner_id: int
+
+
+
