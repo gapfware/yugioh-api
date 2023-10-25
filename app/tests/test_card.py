@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app  # Asegúrate de importar tu aplicación FastAPI
+from app.main import app  # Asegúrate de importar tu aplicación FastAPI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.schemas.card import CardBase

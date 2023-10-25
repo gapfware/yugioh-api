@@ -6,7 +6,7 @@ from datetime import datetime
 class CardBase(BaseModel):
     id: Optional[int] = None
     name: str
-    type: str | None = None
+    type: str = None
     attack: Optional[int] = None
     defense: Optional[int] = None
     description: str
@@ -24,7 +24,7 @@ class CardInDeck(CardBase):
 
 class CardCreate(BaseModel):
     name: str
-    type: str | None = None
+    type: str = None
     attack: Optional[int] = None
     defense: Optional[int] = None
     description: str
